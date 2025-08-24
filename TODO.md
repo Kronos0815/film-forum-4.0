@@ -18,6 +18,8 @@
 
 ## Notizen
 
+Auf Server immer noch den allowed Host eintragen
+
 Wenn keine UI und so dann:
 
 > python manage.py collectstatic

@@ -81,14 +81,27 @@
                 
                 {% for user in users %}
                     <form method="get" action="{% url 'profiles:select' user.id %}" style="display:inline;">
-                        <input
-                            id="profileButton{{ user.username }}"
-                            type="image"
-                            src="{{ user.userprofile.profile_image.url }}"
-                            alt="{{ user.username }}"
-                            class="profileButton"
-                            title="Anmelden als {{ user.username }}"
-                        />
+                        {% if user.userprofile.profile_image %}
+                            <input
+                                id="profileButton{{ user.username }}"
+                                type="image"
+                                src="{{ user.userprofile.profile_image.url }}"
+                                alt="{{ user.username }}"
+                                class="profileButton"
+                                title="Anmelden als {{ user.username }}"
+                            />
+                        {% else %}
+                            <!-- TODO : Eventuell nochmal umsytlen oder in css auslagern -->
+                            <button
+                                id="profileButton{{ user.username }}"
+                                type="submit"
+                                class="profileButton"
+                                title="Anmelden als {{ user.username }}"
+                                style="background-color: #292929; color: white; font-size: 2.5em; border: black solid 3px; border-radius: 50%; height: 100px; width: 100px; display: flex; align-items: center; justify-content: center; padding: 0; margin: 10px; cursor: pointer;"
+                            >
+                                {{ user.username|first|upper }}
+                            </button>
+                        {% endif %}
                     </form>
                 {% empty %}
                     <p>Keine Profile verfügbar.</p>
