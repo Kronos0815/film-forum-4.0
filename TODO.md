@@ -5,9 +5,12 @@
 
 ## NEED TO USE
 
+- Profiles -> HTML PAGE an Mobile anpassen zentrieren
 - Neue Benutzer anlegen
 - Profilbild ändern
 - Namen ändern
+- Icon für die Webseite
+
 
 
 ## NICE TO HAVE
