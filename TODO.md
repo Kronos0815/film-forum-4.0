@@ -14,3 +14,10 @@
 
 - User Page
 - Film Page
+
+
+## Notizen
+
+Wenn keine UI und so dann:
+
+> python manage.py collectstatic
