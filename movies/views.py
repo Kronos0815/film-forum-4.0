@@ -1,0 +1,114 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.models import User
+from django.views.decorators.http import require_POST
+from .models import Movie
+from django.db.models import Prefetch, Count
+import requests
+
+# Session-Decorator für Master-Auth und User-Session
+def require_user_session(view_func):
+    """Decorator: Überprüft Master-Auth und aktive User-Session"""
+    def wrapper(request, *args, **kwargs):
+        # 1. Master-Passwort prüfen
+        if not request.session.get('master_authenticated'):
+            return redirect('authentication:master_login')
+        
+        # 2. User-Session prüfen  
+        if not request.session.get('current_user_id'):
+            return redirect('profiles:selection')
+            
+        return view_func(request, *args, **kwargs)
+    return wrapper
+
+
+
+@require_user_session
+def user_dashboard(request):
+    """Personalisiertes Dashboard - behält movie_list Logik bei"""
+    # Aktuellen User aus Session holen
+    current_user_id = request.session.get('current_user_id')
+    current_user = get_object_or_404(User, id=current_user_id)
+    
+    # Ihre bestehende movie_list Logik
+    users = User.objects.all().order_by('username')
+    movies = (
+        Movie.objects
+        .annotate(vote_count=Count('votes', distinct=True))
+        .filter(vote_count__gt=0)
+        .prefetch_related('votes')
+        .order_by('-vote_count', 'title')
+    )
+    return render(request, 'movies/user_dashboard.html', {
+        'movies': movies, 
+        'users': users,
+        'current_user': current_user
+    })
+
+
+# Fallback für bestehende movie_list URLs
+def movie_list(request):
+    """Leitet zur User-Dashboard weiter"""
+    return redirect('movies:user_dashboard')
+
+@require_POST
+@require_user_session
+def movie_unvote(request, movie_id):
+    # User aus Session holen statt request.user
+    current_user_id = request.session.get('current_user_id')
+    user = get_object_or_404(User, id=current_user_id)
+    
+    movie = get_object_or_404(Movie, id=movie_id)
+
+    # Remove the user's vote if it exists
+    if movie.votes.filter(id=user.id).exists():
+        movie.votes.remove(user)
+
+    return redirect('movies:user_dashboard')
+
+@require_POST
+@require_user_session
+def movie_vote_search(request, movie_id, movie_title):
+    # User aus Session holen statt request.user
+    current_user_id = request.session.get('current_user_id')
+    user = get_object_or_404(User, id=current_user_id)
+
+    # 1. API-Request an JustWatch mit movie_title als Suchbegriff
+    api_url = "https://imdb.iamidiotareyoutoo.com/justwatch"
+    params = {"q": movie_title, "L": "de_DE"}
+    response = requests.get(api_url, params=params)
+    data = response.json()
+
+    # 2. Film anhand der ID aus der API-Antwort filtern
+    movie_data = None
+    for item in data.get("description", []):
+        if item.get("id") == movie_id:
+            movie_data = item
+            break
+
+    if not movie_data:
+        # Film nicht gefunden -> zurück zur Liste
+        return redirect('movies:user_dashboard')
+
+    # 3. Movie-Objekt in der Datenbank suchen oder anlegen, alle Felder korrekt befüllen
+    defaults = {
+        "title": movie_data.get("title", ""),
+        "year": movie_data.get("year") or 0,
+        "runtime": movie_data.get("runtime") or 0,
+        "jwURL": movie_data.get("url", ""),
+        "imgURL": (movie_data.get("photo_url") or [""])[0],
+        "imdbID": movie_data.get("imdbId", ""),
+        "jwRating": movie_data.get("jwRating"),
+        "tomatoMeter": movie_data.get("tomatoMeter"),
+        "offers": movie_data.get("offers", []),
+    }
+    movie, created = Movie.objects.get_or_create(
+        id=movie_id,
+        defaults=defaults
+    )
+
+    # 4. Vote hinzufügen, falls noch nicht vorhanden
+    if not movie.votes.filter(id=user.id).exists():
+        movie.votes.add(user)
+
+    return redirect('movies:user_dashboard')
+

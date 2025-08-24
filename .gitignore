@@ -1,0 +1,38 @@
+# Python
+*.pyc
+*~
+__pycache__
+
+# Env
+.env
+.myvenv/
+venv/
+
+# Datenbank
+db.sqlite3
+
+# Static Ordner im Projektverzeichnis
+/static/
+
+# macOS
+._*
+.DS_Store
+.fseventsd
+.Spotlight-V100
+
+# Windows
+Thumbs.db*
+ehthumbs*.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Visual Studio
+.vscode/
+.history/
+*.code-workspace
+
+# Sonstiges
+PROFILBILD_IMPLEMENTIERUNG_ROLLBACK.txt
+.old/
+api.json
+media/profile_pics/

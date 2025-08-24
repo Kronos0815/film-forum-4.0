@@ -1,0 +1,128 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Cooles Icon -->
+    <title>Film-Forum</title>
+    <link rel="stylesheet" href="{% static 'movies/css/style.css' %}">
+    <script src="{% static 'movies/js/script.js' %}"></script>
+  </head>
+  <body>
+    <form style="display:none">{% csrf_token %}</form>
+    <header>
+      <div id="searchContainerAPI" class="headerContainer">
+        <form onsubmit="searchMovie(event)">
+          <input
+            type="text"
+            id="movieSearchInput"
+            name="movieSearchInput"
+            class="textInput"
+            placeholder="Film suchen..."
+            required
+          />
+          <!-- <button type="submit">Search</button> -->
+        </form>
+      </div>
+
+      <div id="searchContainerDashboard" class="headerContainer hidden">
+        <input type="text" id="movieSearchInputDashboard" placeholder="Durchsuchen...">
+      </div>
+
+      <div class="headerContainer">
+        <div style="display: flex; justify-content: center">
+          <div class="toggleBtnContainer">
+            <input
+              type="radio"
+              name="panSel"
+              class="toggleButton"
+              id="search"
+            /><input
+              type="radio"
+              name="panSel"
+              class="toggleButton"
+              id="board"
+            />
+            <div class="toggleBtnIcCont">
+              <div class="toggleBtnIcElm">🔎</div>
+              <div class="toggleBtnIcElm">🍕</div>
+            </div>
+            <div class="toggleBtnBack"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="voteFilter" class="headerContainer">
+               
+        <!-- User Filter (bestehende Logik) -->
+        <div class="user-filters">
+          {% for user in users %}
+            <div class="user-avatar-filter selected" 
+                 data-user="{{ user.username }}" 
+                 title="{{ user.username }}"
+                 onclick="toggleUserFilter(this)">
+              
+              <!-- Falls Profilbild vorhanden -->
+              {% if user.userprofile.profile_image %}
+                <img src="{{ user.userprofile.profile_image.url }}" alt="{{ user.username }}">
+              {% else %}
+                <!-- Fallback: Erste Buchstabe wie bisher -->
+                {{ user.username|first|upper }}
+              {% endif %}
+              
+              <input type="checkbox" 
+                     id="checkbox-{{ user.username }}" 
+                     name="user-filter-checkboxes" 
+                     data-user="{{ user.username }}" 
+                     checked 
+                     style="display: none;">
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+
+
+    </header>
+
+    <main>
+      <!--Search-->
+      <section>
+        <div id="searchResults" class="movieContainer">
+          <!--Search Ergebnisse hier-->
+        </div>
+      </section>
+      <!--Dashboard-->
+      <section>
+        <div id="dashboard" class="hidden">
+            {% block movies_list %} 
+            {% endblock %}
+        </div>
+      </section>
+    </main>
+
+    <footer>
+<!-- Aktueller User Info -->
+        {% if current_user %}
+        <div class="userInfoContainer" >
+          {% if current_user.userprofile.profile_image %}
+            <img src="{{ current_user.userprofile.profile_image.url }}" 
+                 alt="{{ current_user.username }}" 
+                 class="profileButtonSmall" 
+                 style="margin-right: 10px;">
+          {% endif %}
+          <span style="color: white; margin-right: 15px;">{{ current_user.username }}</span>
+          <a href="{% url 'profiles:selection' %}" class="exit-button">
+            <img src="{% static 'movies/ui/logout.svg' %}" 
+                alt="Zur Profilauswahl" 
+                style="width: 26px; height: 26px; cursor: pointer;">
+          </a>
+          
+        </div>
+        {% endif %}
+    </footer>
+  </body>
+</html>
+
+
