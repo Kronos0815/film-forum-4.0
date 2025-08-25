@@ -30,7 +30,7 @@ def master_login(request):
         # Login-Seite anzeigen
     return render(request, 'authentication/master_login.html')
 
-#TODO Logout im HTML einbauen
+# Logout aus Session, der User muss das Master-PW neu eingeben
 def logout(request):
     """Komplette Session löschen und zu Master-Login"""
     request.session.flush()
