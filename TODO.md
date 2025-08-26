@@ -9,6 +9,8 @@
 - Profilbild ändern
 - Namen ändern
 - Icon für die Webseite
+- Richtige Icons statt Emojis
+- Bisschen die UI polishen und Stresstesten
 
 
 
