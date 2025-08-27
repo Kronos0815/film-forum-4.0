@@ -40,7 +40,17 @@ pip install gunicorn
 
 ## Project konfigurieren
 
-1. In der settings.py File müssen folgende Einstellungen angepasst werden:
+1. .env Datei mit folgenden Informationen anlegen (auf Ebene der manage.py file)
+
+```
+# .env
+
+SECRET_KEY='django-insecure-nrh=superGeheimerKey'
+
+DEBUG=False
+```
+
+Oder Manuel anpassen (nicht empfohlen!)
 
 ```python
 DEBUG = False
