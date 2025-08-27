@@ -1,5 +1,5 @@
 ## NEED TO RUN
-
+- BannerURL in Model aufnehmen
 - Es läuft yippiee!!
 
 ## NEED TO USE
