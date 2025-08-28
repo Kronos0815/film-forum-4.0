@@ -49,6 +49,7 @@ class Movie(models.Model):
     imdbID = models.CharField(max_length=20, unique=True)
     jwRating = models.FloatField(null=True, blank=True)
     tomatoMeter = models.FloatField(null=True, blank=True)
+    backdrops = models.JSONField(default=list, blank=True)
     offers = models.JSONField(default=list, blank=True)
     votes = models.ManyToManyField(User, blank=True, related_name='voted_movies')
 

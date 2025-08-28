@@ -100,6 +100,7 @@ def movie_vote_search(request, movie_id, movie_title):
         "jwRating": movie_data.get("jwRating"),
         "tomatoMeter": movie_data.get("tomatoMeter"),
         "offers": movie_data.get("offers", []),
+        "backdrops": movie_data.get("backdrops", []),
     }
     movie, created = Movie.objects.get_or_create(
         id=movie_id,
