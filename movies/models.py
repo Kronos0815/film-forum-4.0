@@ -36,6 +36,7 @@ def save_user_profile(sender, instance, **kwargs):
 #     imdbID
 #     jwRating
 #     tomatoMeter
+#     backdrops [] with jasons
 #     offers [] with jasons
 #     votes [] with users
     
