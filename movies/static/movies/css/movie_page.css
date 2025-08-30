@@ -1,0 +1,130 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #141414;
+  color: white;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+
+h1 {
+  margin-top: auto;
+  padding: 0;
+  font-size: 4em;
+  margin-bottom: 0.1em;
+  margin-left: 0.1em;
+}
+
+h2 {
+  margin: 0.3em;
+  padding: 0;
+  font-size: 1.5em;
+}
+footer {
+  width: 95%;
+  height: 3em;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  position: fixed;
+  bottom: 0;
+  z-index: 1000;
+}
+
+.movieBanner {
+  position: relative;
+  height: 40%;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+.movieBanner::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  background: linear-gradient(to bottom, rgba(20, 20, 20, 0) 60%, #141414 100%);
+  pointer-events: none;
+}
+.movieContainer {
+  display: grid;
+  grid-template-columns: 25em auto;
+  grid-template-rows: auto auto;
+  gap: 1em;
+  width: 90%;
+  height: 70%;
+  /* background: #141414; */
+  /* border-radius: 4em; */
+  margin-top: -18em;
+  position: relative;
+  z-index: 2;
+}
+.moviePosterContainer {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 1em;
+  width: 30em;
+}
+
+#moviePoster {
+  margin-left: 2em;
+  width: 20em;
+  height: auto;
+  border: white 0.3em solid;
+  /* border-radius: 1em; */
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: left;
+  align-items: bottom;
+  padding: 1em;
+  margin-top: 15em;
+}
+
+#title {
+  width: 70%;
+  height: auto;
+}
+
+.icon {
+  width: 2em;
+  margin: 0.2em;
+}
+
+.img-Button {
+  padding-inline: 1em;
+  margin: 0.1em;
+  height: 2em;
+  border-radius: 0.3em;
+}
+
+.jwButton {
+  border: #f5c518 0.15em solid;
+  height: 0.9em;
+  padding: 0.4em;
+}
+
+.movieDetailsContainer {
+  display: flex;
+  align-items: flex-start;
+  margin-left: 4em;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.defaultContainer {
+  display: flex;
+  align-items: flex-start;
+  margin: 0.1em;
+  padding: 0.1em;
+  justify-content: row;
+}
