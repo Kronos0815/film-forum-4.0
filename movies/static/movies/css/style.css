@@ -501,11 +501,20 @@ input[type="password"]::placeholder {
         grid-row: 2; /* Platziert es in der zweiten Zeile */
      
     }
-    .headerContainer:nth-child(4) {
-    justify-content: center;
+  
+    .headerContainer:nth-child(1) {
+    justify-content: flex-start;
     }
 
     .headerContainer:nth-child(2) {
+    justify-content: flex-start;
+    }
+
+    .headerContainer:nth-child(3) {
+    justify-content: flex-end;
+    }
+
+    .headerContainer:nth-child(4) {
     justify-content: center;
     }
 
