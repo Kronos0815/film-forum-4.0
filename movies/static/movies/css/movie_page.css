@@ -35,6 +35,8 @@ footer {
   z-index: 1000;
 }
 
+
+
 .movieBanner {
   position: relative;
   height: 40%;
@@ -101,17 +103,25 @@ footer {
 }
 
 .img-Button {
-  padding-inline: 1em;
   margin: 0.1em;
-  height: 2em;
+  height: 1.95em;
   border-radius: 0.3em;
+  margin-inline: 0.5em;
 }
 
 .jwButton {
   border: #f5c518 0.15em solid;
   height: 0.9em;
   padding: 0.4em;
+  margin-inline: 0.5em;
 }
+
+.jwButton:hover,
+.img-Button:hover {
+  filter: brightness(60%);
+  
+}
+
 
 .movieDetailsContainer {
   display: flex;
@@ -119,6 +129,7 @@ footer {
   margin-left: 4em;
   flex-direction: column;
   gap: 0.5em;
+  padding-top: 1em;
 }
 
 .defaultContainer {
@@ -127,4 +138,37 @@ footer {
   margin: 0.1em;
   padding: 0.1em;
   justify-content: row;
+}
+
+.votesContainer {
+  display: grid;
+  width: max-content;
+  grid-auto-flow: column;   /* Spaltenweise füllen */
+  grid-template-rows: repeat(3, 65px); /* 4 Zeilen, je 55px hoch */
+  gap: 0.5em 0.5em;
+  padding: 1em;
+}
+.voteProfilePicture {
+    border: black solid 3px;
+    border-radius: 50%;
+    margin: 3px;
+    height: 60px;
+    width: 60px;
+}
+
+.offerButton {
+  background-color: black;
+  width: fit-content;
+  height: 0.9em;
+  color: white;
+  border: solid 2px white;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 0.2em;
+  justify-content: center;
+  padding: 0.4em;
+  padding-inline: 0.6em;
+  margin: 0.1em;
+  margin-inline: 0.5em;
+
 }

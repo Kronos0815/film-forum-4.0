@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
   <head>
     <!-- TODO: Add Icon -->
     <meta charset="UTF-8" />
@@ -11,7 +11,7 @@
 
   <body>
     <div class="movieBanner"
-         style="background-image: url('{% if movie.backdrops %}{{ movie.backdrops.1 }}{% else %}{% static 'movies/ui/default_backdrop.png' %}{% endif %}');"
+         style="background-image: url('{% if movie.backdrops %}{{ movie.backdrops.1 }}{% else %}{% static 'movies/ui/default_backdrop.png' %}{% endif %}');" 
          >
     </div>
     <main class="movieContainer">
@@ -39,24 +39,37 @@
           <h2>{{ movie.year|default:"--" }}</h2>
         </span>
       </div>
-      <div id="votes">
-        <div>
-          <!--Users Icons who voted for the film-->
-        </div>
+      <div class="votesContainer">
+        {% for user in movie.votes.all %}
+          {% if user.userprofile.profile_image %}
+            <img src="{{ user.userprofile.profile_image.url }}" alt="{{ user.username }}" class="voteProfilePicture" title="{{ user.username }}">
+          {% else %}
+            <div class="voteProfilePicture" style="display:flex;align-items:center;justify-content:center;font-size:2em;background:#333;">
+              {{ user.username|first|upper }}
+            </div>
+          {% endif %}
+        {% endfor %}
       </div>
     </main>
     <footer>
-      <a href="">
-        <img class="img-Button" src="{% static 'movies/ui/IMDb.svg' %}" alt="IMDb Logo" />
-      </a>
-      <!-- TODO: Add link -->
-      <a href=""> 
+      {% for offer in offers %}
+        <div class="offerButton">{{ offer.name }}</div>
+      {% empty %}
+        <div class="offerButton">Keine Flatrate Angebote verfügbar</div>
+      {% endfor %}
+
+      <a href="{{ movie.jwURL }}" target="_blank"> 
         <img
           class="jwButton img-Button"
           src="{% static 'movies/ui/JustWatch.png' %}"
           alt="Just Watch Logo"
         />
       </a>
+
+      <a href="https://www.imdb.com/title/{{ movie.imdbID }}/" target="_blank">
+        <img class="img-Button" src="{% static 'movies/ui/IMDb.svg' %}" alt="IMDb Logo" />
+      </a>
+
     </footer>
   </body>
 </html>
