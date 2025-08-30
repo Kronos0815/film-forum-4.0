@@ -50,14 +50,22 @@
           {% endif %}
         {% endfor %}
       </div>
+      <div id="offerContainer">
+        {% for offer in offers %}
+          <div class="offerButton">{{ offer.name }}</div>
+        {% empty %}
+          <div class="offerButton">Keine Flatrate Angebote verfügbar</div>
+        {% endfor %}
+      </div>
     </main>
     <footer>
+      <div id="offerContainerFooter">
       {% for offer in offers %}
         <div class="offerButton">{{ offer.name }}</div>
       {% empty %}
         <div class="offerButton">Keine Flatrate Angebote verfügbar</div>
       {% endfor %}
-
+      </div>
       <a href="{{ movie.jwURL }}" target="_blank"> 
         <img
           class="jwButton img-Button"

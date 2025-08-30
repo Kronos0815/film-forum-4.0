@@ -35,8 +35,6 @@ footer {
   z-index: 1000;
 }
 
-
-
 .movieBanner {
   position: relative;
   height: 40%;
@@ -62,8 +60,6 @@ footer {
   gap: 1em;
   width: 90%;
   height: 70%;
-  /* background: #141414; */
-  /* border-radius: 4em; */
   margin-top: -18em;
   position: relative;
   z-index: 2;
@@ -122,7 +118,6 @@ footer {
   
 }
 
-
 .movieDetailsContainer {
   display: flex;
   align-items: flex-start;
@@ -143,8 +138,8 @@ footer {
 .votesContainer {
   display: grid;
   width: max-content;
-  grid-auto-flow: column;   /* Spaltenweise füllen */
-  grid-template-rows: repeat(3, 65px); /* 4 Zeilen, je 55px hoch */
+  grid-auto-flow: column; 
+  grid-template-rows: repeat(3, 65px); 
   gap: 0.5em 0.5em;
   padding: 1em;
 }
@@ -170,5 +165,92 @@ footer {
   padding-inline: 0.6em;
   margin: 0.1em;
   margin-inline: 0.5em;
+}
+#offerContainer {
+  display: none;
+  justify-content: center;
+  flex-wrap: wrap;
+}
 
+#offerContainerFooter {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+
+
+@media (max-width: 900px) {
+
+  body{
+    height: fit-content;
+  }
+
+  footer {
+    position: relative;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+
+  }
+  h1 {
+    font-size: 2em;
+    margin-left: 0.2em;
+    text-align: center;
+  }
+
+  .movieBanner {
+    min-height: 200px;
+  }
+
+  .movieContainer {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: auto; 
+    gap: 0.5em;
+    margin-top: -9em;
+    padding: 1em;
+    align-content: center;
+  }
+  .moviePosterContainer {
+    justify-content: center;
+    width: fit-content;
+    padding: 0.5em;
+    display: flex;
+    margin-inline: auto;
+  }
+  #moviePoster {
+    margin-left: 0;
+    width: 80vw;
+    max-width: 15em;
+  
+  }
+  .titleContainer {
+    margin: 0.1em;
+    justify-content: center;
+    padding: 0.5em;
+
+  }
+  .movieDetailsContainer {
+    margin-left: 0;
+    padding-top: 0.5em;
+    align-items: center;
+  }
+  .votesContainer {
+    display: flex;
+    flex-wrap: wrap;
+    width: fit-content;
+    grid-auto-flow: row;
+    justify-content: center;
+    padding: 0.5em;
+    margin: auto;
+  }
+
+  #offerContainer {
+    display: flex;
+  }
+  #offerContainerFooter {
+    display: none;
+  }
 }

@@ -17,7 +17,7 @@
         <div class="button-container-horizontal">
 
         <!-- Vorerst Button für Justwatch später eigene Übersicht-->
-          <a href="{% url 'movies:movie_page' movie.id %}">
+          <a href="{% url 'movies:movie_page' movie.id %}" target="_blank" rel="noopener noreferrer">
             <button type="button">Page</button>
           </a>
         <!-- Wenn der User bereits unter den movie.votes ist erscheint ein button zum unvoten mit der view movie_unvote(request, movie_id):, ansonsten ein button der die movie_vote_search(request, movie_id, movie_title) view verwendet um für den Film zu voten -->
