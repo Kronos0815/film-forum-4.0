@@ -19,8 +19,18 @@ def require_user_session(view_func):
             
         return view_func(request, *args, **kwargs)
     return wrapper
+# Kein Plan wie das eigentlich funktioniert
 
-
+@require_user_session
+def movie_page(request, movie_id):
+    requested_movie = get_object_or_404(Movie, id=movie_id)
+    seen = set()
+    flatrate_offers = []
+    for offer in requested_movie.offers:
+        if offer['type'].startswith('FLATRATE') and offer['name'] not in seen:
+            flatrate_offers.append(offer)
+            seen.add(offer['name'])
+    return render(request, 'movies/movie_page.html', {'movie': requested_movie, 'offers': flatrate_offers})
 
 @require_user_session
 def user_dashboard(request):

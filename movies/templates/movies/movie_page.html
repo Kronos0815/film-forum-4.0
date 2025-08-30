@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <!-- TODO: Add Icon -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{movie.title|default:"^^"}}</title>
+    <link rel="stylesheet" href="{% static 'movies/css/movie_page.css' %}">
+  </head>
+
+  <body>
+    <div class="movieBanner"
+         style="background-image: url('{% if movie.backdrops %}{{ movie.backdrops.1 }}{% else %}{% static 'movies/ui/default_backdrop.png' %}{% endif %}');" 
+         >
+    </div>
+    <main class="movieContainer">
+      <div class="moviePosterContainer">
+        <img id="moviePoster" src="{{ movie.imgURL }}" alt="Movie Poster" />
+      </div>
+      <div class="titleContainer">
+        <h1>{{ movie.title|default:"Wer das liest ist wunderschön ^^" }}</h1>
+      </div>
+      <div id="movieDetailsContainer" class="movieDetailsContainer">
+        <span id="rating" class="defaultContainer">
+          <img src="{% static 'movies/ui/star.svg' %}" alt="Star Icon" class="icon" />
+          <h2>{{ movie.jwRating|default:"-"|floatformat:2}}/1</h2>
+        </span>
+        <span id="popularity" class="defaultContainer">
+          <img src="{% static 'movies/ui/tomato.svg' %}" alt="Tomato Icon" class="icon" />
+          <h2>{{ movie.tomatoMeter|default:"--" }}</h2>
+        </span>
+        <span id="duration" class="defaultContainer">
+          <img src="{% static 'movies/ui/clock.svg' %}" alt="Clock Icon" class="icon" />
+          <h2>{{movie.runtime|default:"--" }} min</h2>
+        </span>
+        <span id="releaseYear" class="defaultContainer">
+          <img src="{% static 'movies/ui/calendar.svg' %}" alt="Calendar Icon" class="icon" />
+          <h2>{{ movie.year|default:"--" }}</h2>
+        </span>
+      </div>
+      <div class="votesContainer">
+        {% for user in movie.votes.all %}
+          {% if user.userprofile.profile_image %}
+            <img src="{{ user.userprofile.profile_image.url }}" alt="{{ user.username }}" class="voteProfilePicture" title="{{ user.username }}">
+          {% else %}
+            <div class="voteProfilePicture" style="display:flex;align-items:center;justify-content:center;font-size:2em;background:#333;">
+              {{ user.username|first|upper }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div id="offerContainer">
+        {% for offer in offers %}
+          <div class="offerButton">{{ offer.name }}</div>
+        {% empty %}
+          <div class="offerButton">Keine Flatrate Angebote verfügbar</div>
+        {% endfor %}
+      </div>
+    </main>
+    <footer>
+      <div id="offerContainerFooter">
+      {% for offer in offers %}
+        <div class="offerButton">{{ offer.name }}</div>
+      {% empty %}
+        <div class="offerButton">Keine Flatrate Angebote verfügbar</div>
+      {% endfor %}
+      </div>
+      <a href="{{ movie.jwURL }}" target="_blank"> 
+        <img
+          class="jwButton img-Button"
+          src="{% static 'movies/ui/JustWatch.png' %}"
+          alt="Just Watch Logo"
+        />
+      </a>
+
+      <a href="https://www.imdb.com/title/{{ movie.imdbID }}/" target="_blank">
+        <img class="img-Button" src="{% static 'movies/ui/IMDb.svg' %}" alt="IMDb Logo" />
+      </a>
+
+    </footer>
+  </body>
+</html>
