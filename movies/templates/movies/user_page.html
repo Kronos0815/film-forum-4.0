@@ -2,18 +2,22 @@
 <!DOCTYPE html>
 <html lang="de">
   <head>
-    <!-- TODO: Add Icon -->
+    <link rel="icon" type="image/png" href="{% static 'movies/ui/PizzaAhegao.png' %}">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{requested_user.username|default:"Wait a minute, who are you??"}}</title>
     <link rel="stylesheet" href="{% static 'movies/css/user_page.css' %}"> 
   </head>
 <body>
+    <header>
 
-    <div id="userImage">
-        {% if requested_user.userprofile.profile_image %}
-        <img src="{{ requested_user.userprofile.profile_image.url }}" alt="{{ user.username }}" class="voteProfilePicture" title="{{ user.username }}">
-        {% else %}
+    </header>
+
+    <div class="userContainer">
+        <div id="userImage" >
+            {% if requested_user.userprofile.profile_image %}
+            <img class="profilePicture" src="{{ requested_user.userprofile.profile_image.url }}" alt="{{ user.username }}" class="voteProfilePicture" title="{{ user.username }}">
+            {% else %}
         <div>
             {{ requested_user.username|first|upper }}
         </div>
@@ -23,8 +27,9 @@
     <div id="userName">
         <h1> {{requested_user.username|default:"Wait a minute, who are you??"}}</h1>
     </div>
+    </div>
     
-<section id="userVotesSection">            
+<section id="userVotesSection" class="scrollContainer">            
     {% block user_votes %} 
     {% endblock %}
 </section>

@@ -1,8 +1,31 @@
 {% extends 'movies/user_page.html' %}
 {% block user_votes %}
     {% for movie in voted_movies %}
-        <h4 id="movieInfo_{{movie.id}}">{{movie.title}} ({{movie.year}}) </h4>
+        <div id="movieInfo_{{movie.id}}" class="movieVoteEntry">
+            <img src="{{ movie.imgURL }}" alt="{{ movie.title }} Poster" class="voteMoviePoster">
+            <h4 style="margin-left: 10px;"> {{movie.title}} ({{movie.year}}) </h4>
+            <h4> {{movie.runtime| default:"--"}} min</h4>
+            <h4 id="tomatoMeter"> {{movie.tomatoMeter| default:"--,-"}} 🍅 </h4>
+            <div class="voteContainer">
+                {% for user in movie.votes.all %}
+                    {% if user.userprofile.profile_image %}
+                      <img src="{{ user.userprofile.profile_image.url }}" 
+                        alt="{{ current_user.username }}" 
+                        class="voteProfilePicture" >
+                {% else %}
+                    <div class="voteProfilePicture" 
+                        style=" width: 35px; height: 35px;
+                         display: flex; align-items: center; justify-content: center; background-color: #141414; text-decoration: none; color: white; border: white solid 2px; outline: none;"
+                        ;>
+              {{ user.username|first|upper }}
+            </div>
+          </a>
+          {% endif %}
+            {% endfor %}
+            </div>
+        </div>
+        <br>
     {% empty %}
-        <p>"{{ requested_user.username}}" hat für keine Filme gevotet.</p>
+        <p>{{ requested_user.username}} hat für keine Filme gevotet.</p>
     {% endfor %}
 {% endblock %}
