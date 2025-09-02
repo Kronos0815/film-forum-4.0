@@ -142,3 +142,18 @@ def changeProfilePicture(request):
 #  <input type="file" id="profile_image" name="profile_image" accept="image/*">
 #  <input type="submit" value="Hochladen">
 #</form>>
+
+# View to change the User Profile Name
+@require_user_session
+def changeProfileName(request):
+    if request.method == 'POST':
+        current_user_id = request.session.get('current_user_id')
+        user = get_object_or_404(User, id=current_user_id)
+        
+        new_username = request.POST.get('username', '').strip()
+        
+        if new_username:
+            user.username = new_username
+        
+        user.save()
+        return redirect('profiles:selection') # TODO: Noch anpassen
