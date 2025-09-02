@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <!-- TODO: Add Icon -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{requested_user.username|default:"Wait a minute, who are you??"}}</title>
+    <link rel="stylesheet" href="{% static 'movies/css/user_page.css' %}"> 
+  </head>
+<body>
+
+    <div id="userImage">
+        {% if requested_user.userprofile.profile_image %}
+        <img src="{{ requested_user.userprofile.profile_image.url }}" alt="{{ user.username }}" class="voteProfilePicture" title="{{ user.username }}">
+        {% else %}
+        <div>
+            {{ requested_user.username|first|upper }}
+        </div>
+        {% endif %}
+    </div>
+
+    <div id="userName">
+        <h1> {{requested_user.username|default:"Wait a minute, who are you??"}}</h1>
+    </div>
+    
+<section id="userVotesSection">            
+    {% block user_votes %} 
+    {% endblock %}
+</section>
+</body>
+</html>

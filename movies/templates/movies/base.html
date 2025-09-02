@@ -112,12 +112,25 @@
         {% if current_user %}
         <div class="userInfoContainer" >
           {% if current_user.userprofile.profile_image %}
+          <a id="userProfileButton" href="{% url 'movies:user_page' current_user.id %}">
             <img src="{{ current_user.userprofile.profile_image.url }}" 
                  alt="{{ current_user.username }}" 
                  class="profileButtonSmall" 
                  style="margin-right: 10px;">
+          </a>
+          {% else %}
+          <a id="userProfileButton" href="{% url 'movies:user_page' current_user.id %}">
+            <div class="profileButtonSmall" 
+                 style=" width: 35px; height: 35px;
+                 margin-right: 10px; display: flex; align-items: center; justify-content: center; background-color: #141414; text-decoration: none; color: white; border: none; outline: none;"
+                 ;>
+              {{ current_user.username|first|upper }}
+            </div>
+          </a>
           {% endif %}
+
           <span style="color: white; margin-right: 15px;">{{ current_user.username }}</span>
+
           <a href="{% url 'profiles:selection' %}" class="exit-button">
             <img src="{% static 'movies/ui/logout.svg' %}" 
                 alt="Zur Profilauswahl" 

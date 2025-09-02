@@ -124,6 +124,13 @@ def movie_vote_search(request, movie_id, movie_title):
     return redirect('movies:user_dashboard')
 
 
+# Shows the profile page of a specific User
+@require_user_session
+def user_page(request, id):
+    requested_user = get_object_or_404(User, id=id)
+    voted_movies = requested_user.voted_movies.all().order_by('title')
+    return render(request, 'movies/user_votes.html', {'requested_user': requested_user, 'voted_movies': voted_movies})
+
 # View to change the Profile Picture of the current User
 @require_user_session
 def changeProfilePicture(request):
@@ -157,3 +164,5 @@ def changeProfileName(request):
         
         user.save()
         return redirect('profiles:selection') # TODO: Noch anpassen
+    return render(request, 'profiles/change_profile_name.html') # Noch anpassen
+

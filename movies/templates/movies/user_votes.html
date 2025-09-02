@@ -1,0 +1,8 @@
+{% extends 'movies/user_page.html' %}
+{% block user_votes %}
+    {% for movie in voted_movies %}
+        <h4 id="movieInfo_{{movie.id}}">{{movie.title}} ({{movie.year}}) </h4>
+    {% empty %}
+        <p>"{{ requested_user.username}}" hat für keine Filme gevotet.</p>
+    {% endfor %}
+{% endblock %}

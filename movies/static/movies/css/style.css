@@ -103,6 +103,12 @@ input[type="password"]::placeholder {
   color: #888;
 }
 
+/* Überschreibt Standard-Linkfarben für alle Links */
+a, a:visited, a:active, a:-webkit-any-link {
+    color: white !important;
+    text-decoration: none !important;
+}
+
 .button-container-horizontal {
   display: flex;
   justify-content: center;
@@ -201,6 +207,12 @@ input[type="password"]::placeholder {
 .exit-button {
   height: 35px;
   width: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#userProfileButton {
   display: flex;
   justify-content: center;
   align-items: center;
