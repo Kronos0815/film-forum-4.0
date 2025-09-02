@@ -123,3 +123,22 @@ def movie_vote_search(request, movie_id, movie_title):
 
     return redirect('movies:user_dashboard')
 
+
+# View to change the Profile Picture of the current User
+@require_user_session
+def changeProfilePicture(request):
+    if request.method == 'POST' and 'profile_image' in request.FILES:
+        current_user_id = request.session.get('current_user_id')
+        user = get_object_or_404(User, id=current_user_id)
+        profile = user.userprofile
+        profile.profile_image = request.FILES['profile_image']
+        profile.save()
+        return redirect('profiles:selection')  # TODO: Noch anpassen
+    return render(request, 'profiles/change_profile_picture.html')  # Noch anpassen
+
+#<form action="{% url 'profiles:change_profile_picture' %}" method="POST" enctype="multipart/form-data">
+#  {% csrf_token %}
+#  <label for="profile_image">Profilbild auswählen:</label>
+#  <input type="file" id="profile_image" name="profile_image" accept="image/*">
+#  <input type="submit" value="Hochladen">
+#</form>>
