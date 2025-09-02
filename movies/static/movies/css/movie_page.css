@@ -179,6 +179,12 @@ footer {
 }
 
 
+@media (max-width: 1400px) {
+    footer {
+        height: fit-content;
+    }
+}
+
 
 @media (max-width: 900px) {
 
