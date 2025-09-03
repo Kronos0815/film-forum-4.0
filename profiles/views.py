@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.models import User
 from movies.models import UserProfile
+from django.db import IntegrityError
 
 # Alle Funktionen in der Profiles App erfordern eine Master-Auth
 # Kein Plan wie der Shit funktioniert 100% Claude TODO: verstehen
@@ -38,3 +39,37 @@ def select_profile(request, user_id):
     
     # Zu Dashboard weiterleiten (ohne user_id in URL)
     return redirect('movies:user_dashboard')
+
+
+# Show register Page
+@require_master_auth
+def show_create_profile(request):
+    """Zeigt die Seite zum Erstellen eines neuen Profils an"""
+    return render(request, 'profiles/profile_create.html')
+
+@require_master_auth
+def create_profile(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        profile_image = request.FILES.get('profile_image')
+
+        if not username:
+            messages.error(request, "Benutzername darf nicht leer sein.")
+            return render(request, 'profiles/profile_create.html')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Benutzername existiert bereits.")
+            return render(request, 'profiles/profile_create.html')
+
+        try:
+            new_user = User.objects.create(username=username)
+            # UserProfile wird durch Signal automatisch erstellt!
+            if profile_image:
+                new_user.userprofile.profile_image = profile_image
+                new_user.userprofile.save()
+            return redirect('profiles:selection')
+        except Exception as e:
+            messages.error(request, f"Fehler beim Erstellen des Profils: {str(e)}")
+            return render(request, 'profiles/profile_create.html')
+
+    return render(request, 'profiles/profile_create.html')

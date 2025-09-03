@@ -1,0 +1,61 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Film-Forum</title>
+    <link rel="icon" type="image/png" href="{% static 'movies/ui/PizzaAhegao.png' %}">
+    <link rel="stylesheet" href="{% static 'profiles/css/style.css' %}">
+</head>
+<body>
+    <div id="newUserFormContainer" class="formContainer">
+            <form method="post" enctype="multipart/form-data" action="{% url 'profiles:create_profile' %}">
+                {% csrf_token %}
+                <h2>Neues Profil</h2>
+                <input type="file" id="profile_image" name="profile_image" accept="image/*" style="display:none;">
+                <label for="profile_image">
+                    <img src="{% static 'profiles/ui/upload.svg' %}" alt="Profilbild hochladen" class="uploadButtonImg" id="previewImg">
+                </label>
+                <p>Profilbild (optional)</p>
+                <br>
+                <input type="text" id="username" name="username" required />
+                
+                <div class="messageContainer">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="error">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <br>
+                <button type="submit">Profil erstellen</button>
+                
+            </form>
+
+            <a href="{% url 'profiles:selection' %}"><button>Abbrechen</button></a>
+
+        </div>
+
+    <script>
+        const fileInput = document.getElementById('profile_image');
+        const previewImg = document.querySelector('label[for="profile_image"] img');
+        const imgObject = document.getElementById('previewImg');
+
+        fileInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    previewImg.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+            imgObject.classList.remove('uploadButtonImg');
+            imgObject.classList.add('uploadedImg');
+
+        });
+    </script>
+</body>
+</html>
