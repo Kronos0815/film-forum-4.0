@@ -165,7 +165,7 @@ a, a:visited, a:active, a:-webkit-any-link {
 .profileButtonSmall {
   border: black solid 2px;
   border-radius: 50%;
-  height: 35;
+  height: 35px;
   width: 35px;
 }
 
