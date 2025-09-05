@@ -171,8 +171,8 @@ function displayMovieSearchResults(url) {
 
             movieElement.innerHTML = `
               <div class="movie-overlay">
-                <h3>${movie.title || "Unbekannter Titel"}</h3>
-                <h5>${movie.runtime || "--"} min</h5>
+                <h3 class="movieTitle">${movie.title || "Unbekannter Titel"}</h3>
+                <h5 class="movieRuntime">${movie.runtime || "--"} min</h5>
                 <div class="button-container-horizontal">
                   <a href="${movie.url || "#"}" target="_blank">
                     <button>Mehr</button>

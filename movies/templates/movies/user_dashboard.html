@@ -12,28 +12,9 @@
       {% if movie.imgURL %}style="background-image:url('{{ movie.imgURL }}');background-size:cover;background-position:center;background-repeat:no-repeat;"{% endif %}
     >
       <div class="movie-overlay">
-        <h3>{{ movie.title|default:"Unbekannter Titel" }}</h3>
-        <h5>{{ movie.runtime|default:"--" }} min  || {{ movie.tomatoMeter|default:"--"}} 🍅</h5>
-        <div class="button-container-horizontal">
+<!--         <h3>{{ movie.title|default:"Unbekannter Titel" }}</h3>
+        <h5>{{ movie.runtime|default:"--" }} min  || {{ movie.tomatoMeter|default:"--"}} 🍅</h5> -->
 
-        <!-- Vorerst Button für Justwatch später eigene Übersicht-->
-          <a href="{% url 'movies:movie_page' movie.id %}" target="_blank" rel="noopener noreferrer">
-            <button type="button">Page</button>
-          </a>
-        <!-- Wenn der User bereits unter den movie.votes ist erscheint ein button zum unvoten mit der view movie_unvote(request, movie_id):, ansonsten ein button der die movie_vote_search(request, movie_id, movie_title) view verwendet um für den Film zu voten -->
-
-        {% if current_user in movie.votes.all %}
-          <form method="post" action="{% url 'movies:movie_unvote' movie.id %}">
-            {% csrf_token %}
-            <button type="submit">Unvote</button>
-          </form>
-        {% else %}
-          <form method="post" action="{% url 'movies:movie_vote_search' movie.id movie.title %}">
-            {% csrf_token %}
-            <button type="submit">Vote</button>
-          </form>
-        {% endif %}
-        </div>
 
         <div class="vote-avatars">
           {% with voters=movie.votes.all %}
@@ -49,7 +30,29 @@
               {% endfor %}
             {% endif %}
           {% endwith %}
+        </div>  
+
+
+        <div class="button-container-horizontal">
+
+          <a href="{% url 'movies:movie_page' movie.id %}" target="_blank" rel="noopener noreferrer">
+            <button type="button">Page</button>
+          </a>
+
+
+        {% if current_user in movie.votes.all %}
+          <form method="post" action="{% url 'movies:movie_unvote' movie.id %}">
+            {% csrf_token %}
+            <button type="submit">Unvote</button>
+          </form>
+        {% else %}
+          <form method="post" action="{% url 'movies:movie_vote_search' movie.id movie.title %}">
+            {% csrf_token %}
+            <button type="submit">Vote</button>
+          </form>
+        {% endif %}
         </div>
+
       </div>
     </div>
   {% endfor %}
