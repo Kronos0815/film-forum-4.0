@@ -261,7 +261,7 @@ a, a:visited, a:active, a:-webkit-any-link {
   flex-direction: column;
   justify-content: flex-end; /* Inhalt am unteren Rand */
   align-items: center; /* Zentriert horizontal */
-  padding: 20px; /* Abstand von den Rändern */
+  padding: 10px; /* Abstand von den Rändern */
   box-sizing: border-box; /* Padding wird in die Gesamtgröße einberechnet */
 }
 /* Overlay wird beim Hover über das movieItem angezeigt */
@@ -540,16 +540,21 @@ a, a:visited, a:active, a:-webkit-any-link {
     width: 150px;
     height: 225px;
   }
-  button {
-    width: 55px;
-    height: 22px;
-    font-size: 0.8em;
-    border: 1.5px solid white;
-  }
   .movieRuntime {
   display: none;
   }
   .movieTitle {
   display: none;
+  }
+  
+  .button-container-horizontal {
+    flex-direction: column;
+  }
+
+  .button-container-horizontal button {
+    width: 90px;
+    height: 32px;
+    font-size: 0.8em;
+    border: 1.5px solid white;
   }
 }

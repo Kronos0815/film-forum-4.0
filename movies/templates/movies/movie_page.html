@@ -16,7 +16,11 @@
     </div>
     <main class="movieContainer">
       <div class="moviePosterContainer">
-        <img id="moviePoster" src="{{ movie.imgURL }}" alt="Movie Poster" />
+        {% if not movie.imgURL %}
+          <img id="moviePoster" src="{% static 'movies/ui/default_poster.png' %}" alt="Default Movie Poster" />
+        {% else %}
+          <img id="moviePoster" src="{{ movie.imgURL }}" alt="Movie Poster" />
+        {% endif %}
       </div>
       <div class="titleContainer">
         <h1>{{ movie.title|default:"Wer das liest ist wunderschön ^^" }}</h1>

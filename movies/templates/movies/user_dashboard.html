@@ -1,4 +1,5 @@
 {% extends 'movies/base.html' %}
+{% load static %}
 {% block movies_list %}
 <div id="movieContainer" class="movieContainer">
   {% for movie in movies %}
@@ -9,11 +10,19 @@
       data-voters="{% for v in movie.votes.all %}{{ v.username|escape }}{% if not forloop.last %}|{% endif %}{% endfor %}"
       data-vote-count="{{ movie.votes.count }}"
       data-has-voted="{% if current_user in movie.votes.all %}1{% else %}0{% endif %}"
-      {% if movie.imgURL %}style="background-image:url('{{ movie.imgURL }}');background-size:cover;background-position:center;background-repeat:no-repeat;"{% endif %}
+      {% if movie.imgURL %}style="background-image:url('{{ movie.imgURL }}');background-size:cover;background-position:center;background-repeat:no-repeat;"
+      {% else %}style="background-image:url('{% static 'movies/ui/default_poster.png' %}');background-size:cover;background-position:center;background-repeat:no-repeat;"
+      {% endif %}
     >
       <div class="movie-overlay">
-<!--         <h3>{{ movie.title|default:"Unbekannter Titel" }}</h3>
+
+        {% if not movie.imgURL %}
+          <h3>{{ movie.title|default:"Unbekannter Titel" }}</h3>
+        {% endif %}
+
+        <!-- 
         <h5>{{ movie.runtime|default:"--" }} min  || {{ movie.tomatoMeter|default:"--"}} 🍅</h5> -->
+
 
 
         <div class="vote-avatars">
