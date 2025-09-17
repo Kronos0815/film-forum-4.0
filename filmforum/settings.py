@@ -115,16 +115,21 @@ USE_I18N = True
 USE_TZ = True
 
 
+# If the app is deployed in a subdirectory, set this to the subdirectory path.
+# Example: '/filmforum' if deployed at example.com/filmforum
+FORCE_SCRIPT_NAME = env('FORCE_SCRIPT_NAME', default='')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
-STATIC_URL = '/static/'
+STATIC_URL = f'{FORCE_SCRIPT_NAME}/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Media files (User uploads)
-MEDIA_URL = '/media/'
+MEDIA_URL = f'{FORCE_SCRIPT_NAME}/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
+#TODO: Check if this has to be changed when deploying in a subdirectory
 # Login settings
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'

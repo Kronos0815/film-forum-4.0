@@ -1,6 +1,6 @@
 // wer das liest ist wahrscheinlich Jakob lol
 // Achtung dieser Code ist zum größten Teil AI generiert und kann Fehler enthalten.
-
+const scriptName = window.SCRIPT_NAME || '';
 
 function getCookie(name) {
   let cookieValue = null;
@@ -177,7 +177,7 @@ function displayMovieSearchResults(url) {
                   <a href="${movie.url || "#"}" target="_blank">
                     <button>Mehr</button>
                   </a>
-                  <form method="post" action="/movies/vote_search/${movie.id}/${encodeURIComponent(movie.title)}/">
+                  <form method="post" action="${scriptName}/movies/vote_search/${movie.id}/${encodeURIComponent(movie.title)}/">
                     <input type="hidden" name="csrfmiddlewaretoken" value="${getCookie('csrftoken')}">
                     <button type="submit">Vote</button>
                   </form>

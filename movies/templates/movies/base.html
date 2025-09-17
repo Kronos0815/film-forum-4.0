@@ -104,6 +104,9 @@
             {% block movies_list %} 
             {% endblock %}
         </div>
+        <script>
+          window.SCRIPT_NAME = "{{ request.META.SCRIPT_NAME|default:'/' }}";
+        </script> 
       </section>
     </main>
 
