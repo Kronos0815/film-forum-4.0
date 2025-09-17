@@ -43,7 +43,8 @@ footer {
 }
 
 h3 {
-  font-size: 1.5em;
+  /* clamp(min, val, max) */
+  font-size: clamp(1rem, 0.5rem + 0.5vw, 2rem);
   margin: 0.1em;
   padding: 0.1em;
 }
@@ -243,6 +244,26 @@ a, a:visited, a:active, a:-webkit-any-link {
   overflow: hidden; 
 }
 
+/* Add this new class for the background image */
+.movieItem::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: inherit;
+  background-size: cover;
+  background-position: center;
+  transition: filter 0.3s ease;
+  z-index: -1;
+}
+
+/* Apply blur effect on hover */
+.movieItem:hover::before {
+  filter: blur(5px);
+}
+
 .movie-overlay {
   /* gradient */
   background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.6) 50%, rgba(0, 0, 0, 0) 100%);
@@ -255,6 +276,7 @@ a, a:visited, a:active, a:-webkit-any-link {
   opacity: 0; /* Standardmäßig unsichtbar */
   transform: translateY(100%); /* Startet außerhalb des sichtbaren Bereichs */
   transition: all 0.3s ease; /* Sanfte Animation */
+  z-index: 1; /* Make sure overlay is above the blurred background */
 
   /* Flexbox für Positionierung hinzufügen */
   display: flex;
@@ -264,6 +286,7 @@ a, a:visited, a:active, a:-webkit-any-link {
   padding: 10px; /* Abstand von den Rändern */
   box-sizing: border-box; /* Padding wird in die Gesamtgröße einberechnet */
 }
+
 /* Overlay wird beim Hover über das movieItem angezeigt */
 .movieItem:hover .movie-overlay {
   opacity: 1; /* Wird sichtbar */
@@ -275,7 +298,6 @@ a, a:visited, a:active, a:-webkit-any-link {
   transform: scale(1.05); /* Leichte Vergrößerung */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); /* Schatten */
 }
-
 /* Vote avatars Container */
 
 .vote-avatars {
@@ -416,17 +438,34 @@ a, a:visited, a:active, a:-webkit-any-link {
   margin-bottom: 20px;
 }
 
-/* User Filter Avatar Styles */
 .user-filters {
   display: flex;
+  justify-content: end;
   gap: 10px;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  width: 100%;              /* Explicit width */
+  max-width: 100%;
+  scrollbar-width: thin;
+  -ms-overflow-style: none;
+  padding: 4px;
+}
+
+/* Hide scrollbar in WebKit browsers while maintaining functionality */
+.user-filters::-webkit-scrollbar {
+  height: 4px;  /* Thin scrollbar */
+}
+
+.user-filters::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
 }
 
 .user-avatar-filter {
   width: 30px;
   height: 30px;
+  flex-shrink: 0;
   border-radius: 50%;
   background: black;
   border: 2px solid white;
@@ -502,49 +541,70 @@ a, a:visited, a:active, a:-webkit-any-link {
 }
 
 
+.movieTitleNoImg {
+  display: none;
+}
+
 /* Media Query für Bildschirme unter 1000px */
 @media (max-width: 1000px) {
-    header {
-        grid-template-columns: 1fr 1fr; /* Zwei Spalten für die erste Zeile */
-        grid-template-rows: auto auto; /* Erste Zeile auto, zweite Zeile auto */
-        gap: 10px; /* Optional: Abstand zwischen den Grid-Elementen */
-        text-align: center; /* Zentriert den Text */
-    }
-    
-    /* Das dritte Element nimmt die gesamte zweite Zeile ein */
-    header > :nth-child(4) {
-        grid-column: 1 / -1; /* Erstreckt sich über beide Spalten */
-        grid-row: 2; /* Platziert es in der zweiten Zeile */
-     
-    }
+
+  .movieContainer {
+    gap: 15px;
+  }
   
-    .headerContainer:nth-child(1) {
-    justify-content: flex-start;
-    }
-
-    .headerContainer:nth-child(2) {
-    justify-content: flex-start;
-    }
-
-    .headerContainer:nth-child(3) {
-    justify-content: flex-end;
-    }
-
-    .headerContainer:nth-child(4) {
+  .user-filters {
     justify-content: center;
-    }
+  }
+
+  header {
+      grid-template-columns: 1fr 1fr; 
+      grid-template-rows: auto auto; 
+      /* gap: 10px;  */
+      text-align: center; 
+  }
+  
+  /* Das dritte Element nimmt die gesamte zweite Zeile ein */
+  header > :nth-child(4) {
+      grid-column: 1 / -1; /* Erstreckt sich über beide Spalten */
+      grid-row: 2; /* Platziert es in der zweiten Zeile */
+    
+  }
+
+  .headerContainer:nth-child(1) {
+  justify-content: flex-start;
+  }
+  
+  .headerContainer:nth-child(2) {
+  justify-content: flex-start;
+  }
+
+  .headerContainer:nth-child(3) {
+  justify-content: flex-end;
+  }
+
+  .headerContainer:nth-child(4) {
+  justify-content: center;
+  }
 }
 
 @media (max-width: 470px) {
+  .movieContainer {
+    gap: 7.5px;
+  }
+
   .movieItem {
     width: 150px;
     height: 225px;
   }
   .movieRuntime {
-  display: none;
+    display: none;
   }
   .movieTitle {
-  display: none;
+    display: none;
+  }
+
+  .movieTitleNoImg {
+    display: block;
   }
   
   .button-container-horizontal {

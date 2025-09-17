@@ -161,13 +161,15 @@ function displayMovieSearchResults(url) {
             const movieElement = document.createElement("div");
             movieElement.className = "movieItem";
 
-            // Hintergrundbild setzen, falls vorhanden
+            // Hintergrundbild setzen, falls nicht vorhanden, Standardbild verwenden
             if (movie.photo_url && movie.photo_url[0] != undefined) {
               movieElement.style.backgroundImage = `url('${movie.photo_url[0]}')`;
-              movieElement.style.backgroundSize = "cover";
-              movieElement.style.backgroundPosition = "center";
-              movieElement.style.backgroundRepeat = "no-repeat";
+            } else {
+              movieElement.style.backgroundImage = "url('/static/movies/ui/default_poster.png')";
             }
+            movieElement.style.backgroundSize = "cover";
+            movieElement.style.backgroundPosition = "center";
+            movieElement.style.backgroundRepeat = "no-repeat";
 
             movieElement.innerHTML = `
               <div class="movie-overlay">
