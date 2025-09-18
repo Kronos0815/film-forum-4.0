@@ -259,10 +259,10 @@ a, a:visited, a:active, a:-webkit-any-link {
   z-index: -1;
 }
 
-/* Apply blur effect on hover */
+/* Apply blur effect on hover
 .movieItem:hover::before {
   filter: blur(5px);
-}
+} */
 
 .movie-overlay {
   /* gradient */
@@ -275,7 +275,7 @@ a, a:visited, a:active, a:-webkit-any-link {
   left: 0;
   opacity: 0; /* Standardmäßig unsichtbar */
   transform: translateY(100%); /* Startet außerhalb des sichtbaren Bereichs */
-  transition: all 0.3s ease; /* Sanfte Animation */
+  transition: opacity 0.3s ease; /* Sanfte Animation */
   z-index: 1; /* Make sure overlay is above the blurred background */
 
   /* Flexbox für Positionierung hinzufügen */
@@ -291,6 +291,7 @@ a, a:visited, a:active, a:-webkit-any-link {
 .movieItem:hover .movie-overlay {
   opacity: 1; /* Wird sichtbar */
   transform: translateY(0); /* Gleitet in die richtige Position */
+  backdrop-filter: blur(5px); /* Optional: Weichzeichner-Effekt */
 }
 
 /* Optional: Zusätzlicher Hover-Effekt für das movieItem */
@@ -554,7 +555,7 @@ a, a:visited, a:active, a:-webkit-any-link {
   }
   
   .user-filters {
-    justify-content: start;
+    justify-content: center;
   }
 
   header {
