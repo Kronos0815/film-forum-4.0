@@ -8,6 +8,9 @@
     <link rel="icon" type="image/png" href="{% static 'movies/ui/PizzaAhegao.png' %}">
     <title>Film-Forum</title>
     <link rel="stylesheet" href="{% static 'movies/css/style.css' %}">
+    <script>
+      window.SCRIPT_NAME = "{{ request.META.SCRIPT_NAME|default:'/' }}";
+    </script> 
     <script src="{% static 'movies/js/script.js' %}"></script>
   </head>
   <body>
@@ -104,9 +107,7 @@
             {% block movies_list %} 
             {% endblock %}
         </div>
-        <script>
-          window.SCRIPT_NAME = "{{ request.META.SCRIPT_NAME|default:'/' }}";
-        </script> 
+
       </section>
     </main>
 

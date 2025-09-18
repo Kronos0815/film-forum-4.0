@@ -1,5 +1,7 @@
 // wer das liest ist wahrscheinlich Jakob lol
 // Achtung dieser Code ist zum größten Teil AI generiert und kann Fehler enthalten.
+
+// scriptName für die Pfade auf dem Server
 const scriptName = window.SCRIPT_NAME || '';
 
 function getCookie(name) {
