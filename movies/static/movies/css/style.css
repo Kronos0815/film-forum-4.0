@@ -445,11 +445,12 @@ a, a:visited, a:active, a:-webkit-any-link {
   align-items: center;
   flex-wrap: nowrap;
   overflow-x: auto;
-  width: 100%;              /* Explicit width */
+  width: 100%;              
   max-width: 100%;
   scrollbar-width: thin;
   -ms-overflow-style: none;
   padding: 4px;
+  padding-inline: 10px;
 }
 
 /* Hide scrollbar in WebKit browsers while maintaining functionality */
@@ -553,7 +554,7 @@ a, a:visited, a:active, a:-webkit-any-link {
   }
   
   .user-filters {
-    justify-content: center;
+    justify-content: start;
   }
 
   header {
