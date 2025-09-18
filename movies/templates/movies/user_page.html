@@ -18,7 +18,7 @@
             {% if requested_user.userprofile.profile_image %}
             <img class="profilePicture" src="{{ requested_user.userprofile.profile_image.url }}" alt="{{ user.username }}" class="voteProfilePicture" title="{{ user.username }}">
             {% else %}
-        <div>
+        <div class="profilePictureNoImage">
             {{ requested_user.username|first|upper }}
         </div>
         {% endif %}
