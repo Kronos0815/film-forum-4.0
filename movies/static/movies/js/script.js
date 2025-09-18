@@ -159,6 +159,7 @@ function displayMovieSearchResults(url) {
         if (movies && movies.length > 0) {
           movies.forEach((movie) => {
             const movieElement = document.createElement("div");
+            const usingDefaultImage = !(movie.photo_url && movie.photo_url[0] != undefined);
             movieElement.className = "movieItem";
 
             // Hintergrundbild setzen, falls nicht vorhanden, Standardbild verwenden
@@ -173,6 +174,7 @@ function displayMovieSearchResults(url) {
 
             movieElement.innerHTML = `
               <div class="movie-overlay">
+                ${usingDefaultImage ? `<h3 class="movieTitleNoImg">${movie.title || "Unbekannter Titel"}</h3>` : ''}
                 <h3 class="movieTitle">${movie.title || "Unbekannter Titel"}</h3>
                 <h5 class="movieRuntime">${movie.runtime || "--"} min</h5>
                 <div class="button-container-horizontal">
@@ -183,10 +185,11 @@ function displayMovieSearchResults(url) {
                     <input type="hidden" name="csrfmiddlewaretoken" value="${getCookie('csrftoken')}">
                     <button type="submit">Vote</button>
                   </form>
-                  </div>
                 </div>
               </div>
+            </div>
             `;
+
             // Optional: Button zum Suchen auf werstreamt.es
             // <a href="https://www.werstreamt.es/filme-serien/?q=${encodeURIComponent(movie.imdbId || "")}&action_results=suchen" target="_blank">
             // <button>Wo?</button></a>
