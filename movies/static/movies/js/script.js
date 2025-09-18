@@ -166,7 +166,7 @@ function displayMovieSearchResults(url) {
             if (movie.photo_url && movie.photo_url[0] != undefined) {
               movieElement.style.backgroundImage = `url('${movie.photo_url[0]}')`;
             } else {
-              movieElement.style.backgroundImage = "url('/static/movies/ui/default_poster.png')";
+              movieElement.style.backgroundImage = `url('${scriptName}/static/movies/ui/default_poster.png')`;
             }
             movieElement.style.backgroundSize = "cover";
             movieElement.style.backgroundPosition = "center";
