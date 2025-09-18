@@ -159,20 +159,24 @@ function displayMovieSearchResults(url) {
         if (movies && movies.length > 0) {
           movies.forEach((movie) => {
             const movieElement = document.createElement("div");
+            const usingDefaultImage = !(movie.photo_url && movie.photo_url[0] != undefined);
             movieElement.className = "movieItem";
 
-            // Hintergrundbild setzen, falls vorhanden
+            // Hintergrundbild setzen, falls nicht vorhanden, Standardbild verwenden
             if (movie.photo_url && movie.photo_url[0] != undefined) {
               movieElement.style.backgroundImage = `url('${movie.photo_url[0]}')`;
-              movieElement.style.backgroundSize = "cover";
-              movieElement.style.backgroundPosition = "center";
-              movieElement.style.backgroundRepeat = "no-repeat";
+            } else {
+              movieElement.style.backgroundImage = "url('/static/movies/ui/default_poster.png')";
             }
+            movieElement.style.backgroundSize = "cover";
+            movieElement.style.backgroundPosition = "center";
+            movieElement.style.backgroundRepeat = "no-repeat";
 
             movieElement.innerHTML = `
               <div class="movie-overlay">
-                <h3>${movie.title || "Unbekannter Titel"}</h3>
-                <h5>${movie.runtime || "--"} min</h5>
+                ${usingDefaultImage ? `<h3 class="movieTitleNoImg">${movie.title || "Unbekannter Titel"}</h3>` : ''}
+                <h3 class="movieTitle">${movie.title || "Unbekannter Titel"}</h3>
+                <h5 class="movieRuntime">${movie.runtime || "--"} min</h5>
                 <div class="button-container-horizontal">
                   <a href="${movie.url || "#"}" target="_blank">
                     <button>Mehr</button>
@@ -181,10 +185,11 @@ function displayMovieSearchResults(url) {
                     <input type="hidden" name="csrfmiddlewaretoken" value="${getCookie('csrftoken')}">
                     <button type="submit">Vote</button>
                   </form>
-                  </div>
                 </div>
               </div>
+            </div>
             `;
+
             // Optional: Button zum Suchen auf werstreamt.es
             // <a href="https://www.werstreamt.es/filme-serien/?q=${encodeURIComponent(movie.imdbId || "")}&action_results=suchen" target="_blank">
             // <button>Wo?</button></a>
