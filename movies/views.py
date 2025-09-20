@@ -25,13 +25,14 @@ def require_user_session(view_func):
 @require_user_session
 def movie_page(request, movie_id):
     requested_movie = get_object_or_404(Movie, id=movie_id)
+    users = User.objects.all().order_by('username')
     seen = set()
     flatrate_offers = []
     for offer in requested_movie.offers:
         if offer['type'].startswith('FLATRATE') and offer['name'] not in seen:
             flatrate_offers.append(offer)
             seen.add(offer['name'])
-    return render(request, 'movies/movie_page.html', {'movie': requested_movie, 'offers': flatrate_offers})
+    return render(request, 'movies/movie_page.html', {'movie': requested_movie, 'offers': flatrate_offers, 'users': users})
 
 @require_user_session
 def user_dashboard(request):
@@ -147,16 +148,31 @@ def hall_of_fame(request):
     
 
 @require_user_session
-def addMovieEvent(request, movie_id, date, attendees, rating):
-    
+def addMovieEvent(request, movie_id):
     # Einem Film kann über die movie_page ein History-Eintrag hinzugefügt werden, dieser kann in der Hall of Fame eingesehen werden
     movie = get_object_or_404(Movie, id=movie_id)
-    movie.history.append({
-        'date': date,
-        'attendees': attendees,
-        'rating': rating
-    })
-    movie.save()
+    
+    if request.method == 'POST':
+        # Daten aus dem POST-Request extrahieren
+        date = request.POST.get('date')
+        attendees = request.POST.getlist('attendees')  # Liste der Teilnehmer-Namen
+        rating = request.POST.get('rating')
+        
+        # Validierung
+        if date and attendees and rating:
+            try:
+                rating_float = float(rating)
+                if 0 <= rating_float <= 10:
+                    # History-Eintrag hinzufügen
+                    movie.history.append({
+                        'date': date,
+                        'attendees': attendees,
+                        'rating': rating_float
+                    })
+                    movie.save()
+            except ValueError:
+                pass  # Ungültiger Rating-Wert
+    
     return redirect('movies:movie_page', movie_id=movie_id)
 
 

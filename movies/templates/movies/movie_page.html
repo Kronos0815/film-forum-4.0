@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{movie.title|default:"^^"}}</title>
     <link rel="stylesheet" href="{% static 'movies/css/movie_page.css' %}">
+    <script src="{% static 'movies/js/movie_page.js' %}" defer></script>
   </head>
 
   <body>
@@ -42,6 +43,10 @@
           <img src="{% static 'movies/ui/calendar.svg' %}" alt="Calendar Icon" class="icon" />
           <h2>{{ movie.year|default:"--" }}</h2>
         </span>
+        <span id="addHallOfFame" class="defaultContainer">
+          <button class="greenButton" onclick="openWatchedModal()">watched</button>
+        </span>
+
       </div>
       <div class="votesContainer">
         {% for user in movie.votes.all %}
@@ -83,5 +88,59 @@
       </a>
 
     </footer>
+
+    <!-- Modal für Movie Event -->
+    <div id="watchedModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" onclick="closeWatchedModal()">&times;</span>
+        <h2>Pizza-Abend hinzufügen</h2>
+        <hr>
+        <form id="watchedForm" class="modalForm" method="post" action="{% url 'movies:add_movie_event' movie.id %}">
+          {% csrf_token %}
+          
+          <!-- Datum auswählen -->
+          <div class="form-group">
+            <label for="eventDate">Datum:</label>
+            <input type="date" id="eventDate" name="date" required>
+          </div>
+          
+          <!-- Attendees auswählen -->
+          <div class="form-group">
+            <label>Teilnehmer (mindestens einen auswählen):</label>
+            <div class="attendees-container">
+              {% for user in users %}
+                <div class="user-avatar-attendee" 
+                     data-user="{{ user.username }}" 
+                     title="{{ user.username }}"
+                     onclick="toggleAttendee(this)">
+                  
+                  {% if user.userprofile.profile_image %}
+                    <img src="{{ user.userprofile.profile_image.url }}" alt="{{ user.username }}">
+                  {% else %}
+                    <div class="avatar-fallback">{{ user.username|first|upper }}</div>
+                  {% endif %}
+                  
+                  <input type="checkbox" 
+                         name="attendees" 
+                         value="{{ user.username }}" 
+                         style="display: none;">
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          
+          <!-- Rating von 0-10 -->
+          <div class="form-group">
+            <label for="eventRating">Rating (0-10):</label>
+            <input type="number" id="eventRating" name="rating" min="0" max="10" step="0.1" required>
+          </div>
+          
+          <div class="form-buttons">
+            <button type="button" onclick="closeWatchedModal()" class="cancelButton">Abbrechen</button>
+            <button type="submit" class="greenButton" onclick="return validateForm()">Hinzufügen</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </body>
 </html>
