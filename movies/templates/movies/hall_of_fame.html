@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <link rel="icon" type="image/png" href="{% static 'movies/ui/PizzaAhegao.png' %}">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hall of Shame</title>
+    <link rel="stylesheet" href="{% static 'movies/css/hall_of_fame.css' %}"> 
+  </head>
+<body>
+    <!-- <header>       
+    </header> -->
+        <h1 style="margin: 0.8em; margin-bottom: 0.5em;">Hall of Fame</h1>
+        <hr style="width: 100%;">
+
+    <!-- Optional Top 3 auf Podest hervorheben -->
+    <!-- <div class="topThreeMovieContainer">
+        <div class=""> Platz 2 </div>
+        <div class=""> Platz 1 </div>
+        <div class=""> Platz 3 </div>
+    </div> -->
+    
+<section id="hallOfFameList" class="scrollContainer">            
+    {% block hall_of_fame_movies %} 
+    {% endblock %}
+</section>
+</body>
+</html>

@@ -4,6 +4,7 @@ from django.views.decorators.http import require_POST
 from .models import Movie
 from django.db.models import Prefetch, Count
 import requests
+from django.db.models.expressions import RawSQL
 
 # Session-Decorator für Master-Auth und User-Session
 def require_user_session(view_func):
@@ -122,6 +123,41 @@ def movie_vote_search(request, movie_id, movie_title):
         movie.votes.add(user)
 
     return redirect('movies:user_dashboard')
+
+
+
+@require_user_session
+def hall_of_fame(request):
+    # Current User aus Session holen
+    current_user_id = request.session.get('current_user_id')
+    current_user = get_object_or_404(User, id=current_user_id)
+    
+    users = User.objects.all().order_by('username')
+    
+    # Filme mit nicht-leerer History holen und nach History-Länge sortieren
+    watched_movies = Movie.objects.exclude(history=[]).annotate(
+        history_count=RawSQL("json_array_length(history)", [])
+    ).order_by('-history_count')
+    
+    return render(request, 'movies/hall_of_fame_movies.html', {
+        'watched_movies': watched_movies,
+        'requested_user': current_user,
+        'users' : users,
+    })
+    
+
+@require_user_session
+def addMovieEvent(request, movie_id, date, attendees, rating):
+    
+    # Einem Film kann über die movie_page ein History-Eintrag hinzugefügt werden, dieser kann in der Hall of Fame eingesehen werden
+    movie = get_object_or_404(Movie, id=movie_id)
+    movie.history.append({
+        'date': date,
+        'attendees': attendees,
+        'rating': rating
+    })
+    movie.save()
+    return redirect('movies:movie_page', movie_id=movie_id)
 
 
 # Shows the profile page of a specific User

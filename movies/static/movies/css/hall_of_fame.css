@@ -1,0 +1,192 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #141414;
+  color: white;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  position: relative;
+}
+
+h1{
+    font-size: 5rem;
+    margin-bottom: 0.2em;
+}
+
+header {
+    height: 250px;
+    width: 100%;
+    background-color: #1e1e1e;
+}
+
+.container{
+    margin-bottom: 1em;
+}
+
+.profilePicture {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 6px solid #1e1e1e;
+}
+
+.profilePictureNoImage {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    border: 6px solid #1e1e1e;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10rem;
+    background-color: #141414;
+    color: white;
+}
+
+#userName {
+/* Items am unteren rand */ 
+    margin-top: auto;
+    padding: 0.5em;
+    margin-bottom: 0.1em;
+    margin-left: 4em;
+}
+
+.userContainer {
+    position: relative;
+    left: -7em;
+    display: grid;
+    grid-template-columns: min-content auto;
+    margin: -10em;
+    margin-bottom: 2em;
+    
+}
+
+.scrollContainer {
+    margin-top: 1em;
+    height: fit-content;
+    width: max(1200px, 50vw);
+    padding: 10px;
+    width: 80%;
+    max-width: 900px;
+/*     background-color: #1e1e1e; */
+    border-radius: 8px;
+    margin-bottom: 3em;
+    gap: 1em;
+}
+
+.voteMoviePoster {
+    width: 8em; 
+    height: auto; 
+    border-radius: 8px; margin-right: 1em; 
+    border: solid white 2px;
+}
+
+.movieEntry {
+    display: grid;
+    grid-template-columns: 8em 2fr 4em 4em;
+    align-items: center;
+    gap: 1em;
+    background-color: #1e1e1e;
+    padding: 0.8em;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.profileContainer {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.ProfilePicture {
+    border: white solid 2px;
+    border-radius: 50%;
+    margin: 0.2em;
+    height: 25px;
+    width: 25px;
+}
+
+.historyContainer {
+    display: flex;
+    flex-direction: column;
+    background: #3a3a3a;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.historyEntry {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    padding: 0.5em;
+}
+
+@media (max-width: 1000px){
+
+    header {
+        height: 160px;
+    }
+
+    h1{
+        font-size: 4rem;
+        margin: 0;
+    }
+    
+    h4{
+        padding-inline: fit-content; 
+        margin-block: 0.2em;
+    }
+
+    .profilePicture{
+        width: 190px;
+        height: 190px;
+    }
+
+    .userContainer {
+        left: 0;
+        margin: -7em;
+        grid-template-columns: auto;
+        justify-items: center;
+        text-align: center;
+    }
+
+    #userName {
+        margin-left: 0;
+        margin-bottom: 8em;
+    }
+
+    .voteMoviePoster {
+        display: none;
+    }
+
+    .scrollContainer {
+        width: 80%;
+        height: fit-content;
+
+    }
+
+    #tomatoMeter {
+        display: none;
+    }
+
+    .movieEntry {
+        grid-template-columns:  auto 2fr;
+        gap: 0.5em;
+    }
+
+    .movieEntry h4:nth-child(3) {
+        text-align: right;
+        justify-self: end;
+    }
+
+    .voteContainer {
+    display: flex;
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    margin-top: 0.5em;
+    margin-left: 10px;
+    
+    }
+}

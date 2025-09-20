@@ -1,0 +1,53 @@
+{% extends 'movies/hall_of_fame.html' %}
+{% block hall_of_fame_movies %}
+    
+    {% for movie in watched_movies %}
+    <div class="container">
+        
+        <div id="movieInfo_{{movie.id}}" class="movieEntry">
+        <img src="{{ movie.imgURL }}" alt="{{ movie.title }} Poster" class="voteMoviePoster">
+        <h4 style="margin-left: 10px;"> {{movie.title}} ({{movie.year}}) </h4>
+        <h4> {{movie.runtime| default:"--"}} min</h4>
+        <h4 id="tomatoMeter"> {{movie.tomatoMeter| default:"--,-"}} 🍅 </h4>
+        </div>
+        
+        <!-- Debug output of history -->
+        <div class="historyContainer">
+            {% for event in movie.history %}
+            <div class="historyEntry">
+                📅 {{ event.date }} &nbsp; 
+                <div class="profileContainer">
+                {% for attendee_id in event.attendees %}
+                    {% for user in users %}
+                        {% if user.id == attendee_id %}
+                            {% if user.userprofile.profile_image %}
+                                <img src="{{ user.userprofile.profile_image.url }}" alt="{{ user.username }}'s Profile Picture" class="ProfilePicture" title="{{ user.username }}">
+                                {% else %}
+                                <div class="ProfilePicture" 
+                                    style=" width: 25px; height: 25px;
+                                            display: flex; align-items: center; justify-content: center; background-color: #141414; text-decoration: none; color: white; border: white solid 2px; outline: none;"
+                                            ;>
+                                    {{ user.username|first|upper }}
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+                </div>
+                {% if event.rating %}
+                    &nbsp; ⭐ {{ event.rating }}/10
+                {% endif %}
+            </div> 
+            {% endfor %}
+        </div>
+    </div>
+    {% empty %}
+
+        <div style="padding: 20px; background-color: #333; border-radius: 5px; margin-top: 20px;">
+            <p>No movies with history found. Check if you have any movies with non-empty history data.</p>
+        </div>
+
+    {% endfor %}
+
+
+{% endblock %}

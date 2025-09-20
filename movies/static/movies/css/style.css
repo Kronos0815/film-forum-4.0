@@ -547,6 +547,20 @@ a, a:visited, a:active, a:-webkit-any-link {
   display: none;
 }
 
+.iconButton {
+  background-color: rgba(0, 0, 0, 0);
+  height: 53px;
+  width: 53px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px;
+  padding: 5px;
+  border: solid 2px white;
+  border-radius: 50%;
+}
+
+
 /* Media Query für Bildschirme unter 1000px */
 @media (max-width: 1000px) {
 

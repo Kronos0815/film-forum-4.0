@@ -53,33 +53,8 @@ class Movie(models.Model):
     backdrops = models.JSONField(default=list, blank=True)
     offers = models.JSONField(default=list, blank=True)
     votes = models.ManyToManyField(User, blank=True, related_name='voted_movies')
+    # Every time the movie was watched with date and attendees, format: [{"date": "2023-10-01", "attendees": [1,2,3]}, Rating (optional)]
+    history = models.JSONField(default=list, blank=True)
 
     def __str__(self):
-        return f"{self.title} ({self.year})"
-    
-class HallOfFame(models.Model):
-    
-    # Primary Key Automatisch von Django
-    
-    # Verknüpfung zum Film
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='hall_of_fame_entries')
-    
-    # Datum des Eintrags
-    date_watched = models.DateField()
-    
-    # Anwesende Kalte Pizza Genießer
-    attendees = models.ManyToManyField(User, related_name='hall_of_fame_attendances')
-    
-    # Created At Timestamp
-    created_at = models.DateTimeField(auto_now_add=True)
-    
-    class Meta:
-        ordering = ['-date_watched']  # Neueste zuerst
-        verbose_name = "Hall of Fame Entry"
-        verbose_name_plural = "Hall of Fame Entries"
-    
-    def __str__(self):
-        return f"{self.movie.title} - {self.date_watched.strftime('%Y-%m-%d')}"
-    
-    def get_attendee_count(self):
-        return self.attendees.count()
+        return f"{self.title} ({self.year}) | {self.runtime} min"

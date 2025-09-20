@@ -143,6 +143,13 @@
           
         </div>
         {% endif %}
+
+        <!-- Button für die Hall of Fame -->
+
+        <Button id="HallofFameButton" class="iconButton" onclick="window.location.href='{% url 'movies:hall_of_fame' %}'" title="Hall of Fame">
+          <img src="{% static 'movies/ui/trophy.svg' %}" alt="Hall of Fame" style="width: 26px; height: 26px; cursor: pointer;">
+        </Button>
+
     </footer>
   </body>
 </html>
