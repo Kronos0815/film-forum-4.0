@@ -110,7 +110,8 @@
             <div class="attendees-container">
               {% for user in users %}
                 <div class="user-avatar-attendee" 
-                     data-user="{{ user.username }}" 
+                     data-user-id="{{ user.id }}" 
+                     data-username="{{ user.username }}"
                      title="{{ user.username }}"
                      onclick="toggleAttendee(this)">
                   
@@ -122,7 +123,7 @@
                   
                   <input type="checkbox" 
                          name="attendees" 
-                         value="{{ user.username }}" 
+                         value="{{ user.id }}" 
                          style="display: none;">
                 </div>
               {% endfor %}

@@ -155,21 +155,31 @@ def addMovieEvent(request, movie_id):
     if request.method == 'POST':
         # Daten aus dem POST-Request extrahieren
         date = request.POST.get('date')
-        attendees = request.POST.getlist('attendees')  # Liste der Teilnehmer-Namen
+        attendee_ids = request.POST.getlist('attendees')  # Liste der Teilnehmer-IDs
         rating = request.POST.get('rating')
         
         # Validierung
-        if date and attendees and rating:
+        if date and attendee_ids and rating:
             try:
                 rating_float = float(rating)
                 if 0 <= rating_float <= 10:
-                    # History-Eintrag hinzufügen
-                    movie.history.append({
-                        'date': date,
-                        'attendees': attendees,
-                        'rating': rating_float
-                    })
-                    movie.save()
+                    # User-IDs in Usernamen umwandeln
+                    attendee_usernames = []
+                    for user_id in attendee_ids:
+                        try:
+                            user = User.objects.get(id=int(user_id))
+                            attendee_usernames.append(user.username)
+                        except (User.DoesNotExist, ValueError):
+                            continue  # Ungültige User-ID überspringen
+                    
+                    # History-Eintrag hinzufügen falls gültige Attendees vorhanden
+                    if attendee_usernames:
+                        movie.history.append({
+                            'date': date,
+                            'attendees': attendee_usernames,
+                            'rating': rating_float
+                        })
+                        movie.save()
             except ValueError:
                 pass  # Ungültiger Rating-Wert
     
