@@ -163,20 +163,21 @@ def addMovieEvent(request, movie_id):
             try:
                 rating_float = float(rating)
                 if 0 <= rating_float <= 10:
-                    # User-IDs in Usernamen umwandeln
-                    attendee_usernames = []
+                    # User-IDs validieren
+                    valid_attendee_ids = []
                     for user_id in attendee_ids:
                         try:
-                            user = User.objects.get(id=int(user_id))
-                            attendee_usernames.append(user.username)
+                            # Prüfen ob User existiert
+                            User.objects.get(id=int(user_id))
+                            valid_attendee_ids.append(int(user_id))
                         except (User.DoesNotExist, ValueError):
                             continue  # Ungültige User-ID überspringen
                     
                     # History-Eintrag hinzufügen falls gültige Attendees vorhanden
-                    if attendee_usernames:
+                    if valid_attendee_ids:
                         movie.history.append({
                             'date': date,
-                            'attendees': attendee_usernames,
+                            'attendees': valid_attendee_ids,
                             'rating': rating_float
                         })
                         movie.save()
