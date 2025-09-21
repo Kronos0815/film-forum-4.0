@@ -13,6 +13,7 @@
       {{requested_user.username|default:"Wait a minute, who are you??"}}
     </title>
     <link rel="stylesheet" href="{% static 'movies/css/user_page.css' %}" />
+    <script src="{% static 'movies/js/user_page.js' %}" defer></script>
   </head>
   <body>
     <header></header>
@@ -41,7 +42,7 @@
           </h1>
         </div>
         <img
-          onclick=""
+          onclick="openEditProfileModal()"
           class="editButton"
           src="{% static '/movies/ui/edit.svg' %}"
           alt="Edit Profile"
@@ -52,5 +53,44 @@
     <section id="userVotesSection" class="scrollContainer">
       {% block user_votes %} {% endblock %}
     </section>
+
+    <!-- Modal für Profile Edit -->
+    <div id="editProfileModal" class="modal" style="display: none;">
+      <div class="modal-content">
+        <span class="close" onclick="closeEditProfileModal()">&times;</span>
+        <h2>Profil bearbeiten</h2>
+        <hr>
+        
+        <!-- Username ändern Form -->
+        <form id="editUsernameForm" class="modalForm" method="post" action="{% url 'movies:change_profile_name' %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="username">Benutzername:</label>
+            <input type="text" id="username" name="username" value="{{ requested_user.username }}" required>
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="greenButton">Username ändern</button>
+          </div>
+        </form>
+
+        <hr style="margin: 2em 0;">
+
+        <!-- Profilbild ändern Form -->
+        <form id="editProfileImageForm" class="modalForm" method="post" action="{% url 'movies:change_profile_picture' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="profile_image">Profilbild auswählen:</label>
+            <input type="file" id="profile_image" name="profile_image" accept="image/*">
+          </div>
+          <div class="form-buttons">
+            <button type="submit" class="greenButton">Profilbild ändern</button>
+          </div>
+        </form>
+
+        <!-- <div class="form-buttons">
+          <button type="button" onclick="closeEditProfileModal()" class="cancelButton">Schließen</button>
+        </div> -->
+      </div>
+    </div>
   </body>
 </html>

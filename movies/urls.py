@@ -12,4 +12,6 @@ urlpatterns = [
     path('user/<int:id>/', views.user_page, name='user_page'),
     path('hall_of_fame/', views.hall_of_fame, name='hall_of_fame'),
     path('add_movie_event/<str:movie_id>/', views.addMovieEvent, name='add_movie_event'),
+    path('change_profile_picture/', views.changeProfilePicture, name='change_profile_picture'),
+    path('change_profile_name/', views.changeProfileName, name='change_profile_name'),
 ]

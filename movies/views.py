@@ -203,15 +203,14 @@ def changeProfilePicture(request):
         profile = user.userprofile
         profile.profile_image = request.FILES['profile_image']
         profile.save()
-        return redirect('profiles:selection')  # TODO: Noch anpassen
-    return render(request, 'profiles/change_profile_picture.html')  # Noch anpassen
+        return redirect('movies:user_page', id=user.id)  # Redirect zurück zur User Page
+    
+    # GET request fallback - redirect to user page
+    current_user_id = request.session.get('current_user_id')
+    user = get_object_or_404(User, id=current_user_id)
+    return redirect('movies:user_page', id=user.id)
 
-#<form action="{% url 'profiles:change_profile_picture' %}" method="POST" enctype="multipart/form-data">
-#  {% csrf_token %}
-#  <label for="profile_image">Profilbild auswählen:</label>
-#  <input type="file" id="profile_image" name="profile_image" accept="image/*">
-#  <input type="submit" value="Hochladen">
-#</form>>
+
 
 # View to change the User Profile Name
 @require_user_session
@@ -224,8 +223,12 @@ def changeProfileName(request):
         
         if new_username:
             user.username = new_username
+            user.save()
         
-        user.save()
-        return redirect('profiles:selection') # TODO: Noch anpassen
-    return render(request, 'profiles/change_profile_name.html') # Noch anpassen
+        return redirect('movies:user_page', id=user.id)  # Redirect zurück zur User Page
+    
+    # GET request fallback - redirect to user page
+    current_user_id = request.session.get('current_user_id')
+    user = get_object_or_404(User, id=current_user_id)
+    return redirect('movies:user_page', id=user.id)
 
