@@ -1,8 +1,23 @@
 {% extends 'movies/user_page.html' %}
+{% load static %}
 {% block user_votes %}
     {% for movie in voted_movies %}
         <div id="movieInfo_{{movie.id}}" class="movieVoteEntry">
-            <img src="{{ movie.imgURL }}" alt="{{ movie.title }} Poster" class="voteMoviePoster">
+            {% if movie.imgURL %}
+                <img
+                  class="voteMoviePoster"
+                  src="{{ movie.imgURL }}"
+                  alt="{{ movie.title }}"
+                  title="{{ movie.title }}"
+                />
+            {% else %}
+                <img
+                  class="voteMoviePoster"
+                  src="{% static '/movies/ui/default_poster.png'%}"
+                  alt="{{ movie.title }}"
+                  title="{{ movie.title }}"
+                />
+            {% endif %}
             <h4 style="margin-left: 10px;"> {{movie.title}} ({{movie.year}}) </h4>
             <h4> {{movie.runtime| default:"--"}} min</h4>
             <h4 id="tomatoMeter"> {{movie.tomatoMeter| default:"--,-"}} 🍅 </h4>
