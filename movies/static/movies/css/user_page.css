@@ -103,6 +103,20 @@ background-color: #1e1e1e;
     width: 35px;
 }
 
+.editButton {
+    width: 35px;
+    height: 35px;
+    cursor: pointer;
+    margin-bottom: 2.5em;
+    margin-top: auto;
+    margin-left: 1em;
+    padding: 0.1em;
+}
+
+.editButton:hover {
+    filter: invert(60%);
+}
+
 @media (max-width: 1000px){
 
     header {
@@ -164,10 +178,12 @@ background-color: #1e1e1e;
     grid-column: 1 / -1;
     margin-top: 0.5em;
     margin-left: 10px;
-    
     }
-    
-    
 
-
+    .editButton {
+        position: absolute;
+        top: 11em;
+        right: 10px;
+        margin: 0;
+    }
 }
