@@ -163,7 +163,9 @@ function displayMovieSearchResults(url) {
             const movieElement = document.createElement("div");
             const usingDefaultImage = !(movie.photo_url && movie.photo_url[0] != undefined);
             movieElement.className = "movieItem";
-            movieElement.onclick = () => {};
+            // Damit das Element auf IOS geklickt werden kann oneclick ohne Funktion mitgeben
+            movieElement.setAttribute("onclick", "");
+
 
             // Hintergrundbild setzen, falls nicht vorhanden, Standardbild verwenden
             if (movie.photo_url && movie.photo_url[0] != undefined) {
