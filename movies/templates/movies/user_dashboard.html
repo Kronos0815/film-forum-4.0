@@ -5,6 +5,7 @@
   {% for movie in movies %}
     <div
       class="movieItem"
+      onclick=""
       data-id="{{ movie.id }}"
       data-title="{{ movie.title|default:''|escape }}"
       data-voters="{% for v in movie.votes.all %}{{ v.username|escape }}{% if not forloop.last %}|{% endif %}{% endfor %}"
