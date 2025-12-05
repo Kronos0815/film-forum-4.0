@@ -184,6 +184,14 @@ def addMovieEvent(request, movie_id):
             except ValueError:
                 pass  # Ungültiger Rating-Wert
     
+        # The users how watched the movie has to be removed from the movie votes
+        for user_id in attendee_ids:
+            try:
+                user = User.objects.get(id=int(user_id))
+                if movie.votes.filter(id=user.id).exists():
+                    movie.votes.remove(user)
+            except (User.DoesNotExist, ValueError):
+                continue  # Ungültige User-ID überspringen
     return redirect('movies:movie_page', movie_id=movie_id)
 
 
