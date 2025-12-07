@@ -5,6 +5,8 @@ from .models import Movie
 from django.db.models import Prefetch, Count
 import requests
 from django.db.models.expressions import RawSQL
+import datetime
+from django.utils import timezone
 
 # Session-Decorator für Master-Auth und User-Session
 def require_user_session(view_func):
@@ -25,6 +27,7 @@ def require_user_session(view_func):
 @require_user_session
 def movie_page(request, movie_id):
     requested_movie = get_object_or_404(Movie, id=movie_id)
+    update_movie_information(request, movie_id)
     users = User.objects.all().order_by('username')
     seen = set()
     flatrate_offers = []
@@ -113,6 +116,7 @@ def movie_vote_search(request, movie_id, movie_title):
         "tomatoMeter": movie_data.get("tomatoMeter"),
         "offers": movie_data.get("offers", []),
         "backdrops": movie_data.get("backdrops", []),
+        "timestamp": timezone.now(),
     }
     movie, created = Movie.objects.get_or_create(
         id=movie_id,
@@ -194,6 +198,38 @@ def addMovieEvent(request, movie_id):
                 continue  # Ungültige User-ID überspringen
     return redirect('movies:movie_page', movie_id=movie_id)
 
+# update film 
+# Diese Methode wird aufgerufen, wenn der Timestamp des Films älter als ein Tag ist -> TODO:In Datenbank anlegen, um die Streaming-Informationen aktuell zu halten
+@require_user_session
+def update_movie_information(request, movie_id):
+    
+    movie = get_object_or_404(Movie, id=movie_id)
+    
+    if movie.timestamp < timezone.now() - datetime.timedelta(days=1):
+        # API-Request an JustWatch mit movie_title als Suchbegriff
+        api_url = "https://imdb.iamidiotareyoutoo.com/justwatch"
+        params = {"q": movie.title, "L": "de_DE"}
+        response = requests.get(api_url, params=params)
+        data = response.json()
+
+        # 2. Film anhand der ID aus der API-Antwort filtern
+        movie_data = None
+        for item in data.get("description", []):
+            if item.get("id") == movie_id:
+                movie_data = item
+                break
+
+        if not movie_data:
+            # Film nicht gefunden -> zurück zur Liste
+            return redirect('movies:movie_page', movie_id=movie_id)
+
+        # Update offers und timestamp
+        movie.offers = movie_data.get("offers", [])
+        movie.timestamp = timezone.now()
+        movie.save()
+    
+    return redirect('movies:movie_page', movie_id=movie_id)
+    
 
 # Shows the profile page of a specific User
 @require_user_session

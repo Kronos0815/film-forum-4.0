@@ -39,6 +39,8 @@ def save_user_profile(sender, instance, **kwargs):
 #     backdrops [] with jasons
 #     offers [] with jasons
 #     votes [] with users
+#     timestamp
+#     history [] with jasons (date, attendees, rating (optional))
     
 class Movie(models.Model):
     id = models.CharField(max_length=20, primary_key=True)
@@ -53,8 +55,10 @@ class Movie(models.Model):
     backdrops = models.JSONField(default=list, blank=True)
     offers = models.JSONField(default=list, blank=True)
     votes = models.ManyToManyField(User, blank=True, related_name='voted_movies')
+    timestamp = models.DateTimeField(auto_now=True)
     # Every time the movie was watched with date and attendees, format: [{"date": "2023-10-01", "attendees": [1,2,3]}, Rating (optional)]
     history = models.JSONField(default=list, blank=True)
+    
 
     def __str__(self):
         return f"{self.title} ({self.year}) | {self.runtime} min"
