@@ -14,4 +14,5 @@ urlpatterns = [
     path('add_movie_event/<str:movie_id>/', views.addMovieEvent, name='add_movie_event'),
     path('change_profile_picture/', views.changeProfilePicture, name='change_profile_picture'),
     path('change_profile_name/', views.changeProfileName, name='change_profile_name'),
+    path('movie/<str:movie_id>/rate/', views.rate_movie, name='rate_movie'),
 ]

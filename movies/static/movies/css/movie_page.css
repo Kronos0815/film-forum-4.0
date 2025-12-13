@@ -51,6 +51,27 @@ footer {
   background-color: #218838;
 }
 
+.blueButton{
+  background-color: #2857a7;
+  border: none;
+  color: white;
+  padding: 0.5em 1em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1em;
+  margin: 0.2em;
+  cursor: pointer;
+  border-radius: 0.3em;
+
+}
+
+.blueButton:hover{
+  background-color: #446db5;
+}
+
+
+
 .movieBanner {
   position: relative;
   height: 40%;
@@ -408,4 +429,22 @@ footer {
   font-size: 1em;
   cursor: pointer;
   border-radius: 0.3em;
+}
+
+.rating-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+#movieRating {
+  flex: 1;
+  height: 8px;
+  cursor: pointer;
+}
+
+#ratingDisplay {
+  font-weight: bold;
+  font-size: 1.2em;
+  min-width: 50px;
 }

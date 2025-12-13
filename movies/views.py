@@ -29,13 +29,25 @@ def movie_page(request, movie_id):
     requested_movie = get_object_or_404(Movie, id=movie_id)
     update_movie_information(request, movie_id)
     users = User.objects.all().order_by('username')
+    
+    # Aktuelles User-Rating holen
+    current_user_id = request.session.get('current_user_id')
+    current_user = get_object_or_404(User, id=current_user_id)
+    user_rating = current_user.userprofile.movie_ratings.get(str(movie_id), {}).get('rating', None)
+    
     seen = set()
     flatrate_offers = []
     for offer in requested_movie.offers:
         if offer['type'].startswith('FLATRATE') and offer['name'] not in seen:
             flatrate_offers.append(offer)
             seen.add(offer['name'])
-    return render(request, 'movies/movie_page.html', {'movie': requested_movie, 'offers': flatrate_offers, 'users': users})
+    
+    return render(request, 'movies/movie_page.html', {
+        'movie': requested_movie, 
+        'offers': flatrate_offers, 
+        'users': users,
+        'user_rating': user_rating
+    })
 
 @require_user_session
 def user_dashboard(request):
@@ -149,7 +161,29 @@ def hall_of_fame(request):
         'requested_user': current_user,
         'users' : users,
     })
+
+@require_POST
+@require_user_session
+def rate_movie(request, movie_id):
+    current_user_id = request.session.get('current_user_id')
+    user = get_object_or_404(User, id=current_user_id)
+    movie = get_object_or_404(Movie, id=movie_id)
     
+    rating = request.POST.get('rating')
+    
+    if rating:
+        try:
+            rating_value = float(rating)
+            if 0 <= rating_value <= 10:
+                user.userprofile.movie_ratings[str(movie_id)] = {
+                    'rating': rating_value,
+                    'rated_at': timezone.now().isoformat(),
+                }
+                user.userprofile.save()
+        except (ValueError, TypeError):
+            pass
+    
+    return redirect('movies:movie_page', movie_id=movie_id)
 
 @require_user_session
 def addMovieEvent(request, movie_id):
@@ -160,31 +194,41 @@ def addMovieEvent(request, movie_id):
         # Daten aus dem POST-Request extrahieren
         date = request.POST.get('date')
         attendee_ids = request.POST.getlist('attendees')  # Liste der Teilnehmer-IDs
-        rating = request.POST.get('rating')
+        rating = None
         
         # Validierung
-        if date and attendee_ids and rating:
+        if date and attendee_ids:
             try:
-                rating_float = float(rating)
-                if 0 <= rating_float <= 10:
-                    # User-IDs validieren
-                    valid_attendee_ids = []
-                    for user_id in attendee_ids:
-                        try:
-                            # Prüfen ob User existiert
-                            User.objects.get(id=int(user_id))
-                            valid_attendee_ids.append(int(user_id))
-                        except (User.DoesNotExist, ValueError):
-                            continue  # Ungültige User-ID überspringen
+                
+                # User-IDs validieren
+                valid_attendee_ids = []
+                ratings = []
+                for user_id in attendee_ids:
+                    try:
+                        # Prüfen ob User existiert
+                        user = User.objects.get(id=int(user_id))
+                        # Ratings in die Liste jeeten
+                        user_rating = user.userprofile.movie_ratings.get(str(movie_id), {}).get('rating', None)
+                        if user_rating is not None:
+                            ratings.append(float(user_rating))
+                        
+                        valid_attendee_ids.append(int(user_id))
+                    except (User.DoesNotExist, ValueError):
+                        continue  # Ungültige User-ID überspringen
                     
-                    # History-Eintrag hinzufügen falls gültige Attendees vorhanden
-                    if valid_attendee_ids:
-                        movie.history.append({
-                            'date': date,
-                            'attendees': valid_attendee_ids,
-                            'rating': rating_float
-                        })
-                        movie.save()
+                
+                # Film rating für das Event berechnen -> Jeder User hat ein JSON mit Filmen für die er gevotet hat
+                    
+                rating_float = round(sum(ratings) / len(ratings),2) if ratings else None
+                
+                # History-Eintrag hinzufügen falls gültige Attendees vorhanden
+                if valid_attendee_ids:
+                    movie.history.append({
+                        'date': date,
+                        'attendees': valid_attendee_ids,
+                        'rating': rating_float
+                    })
+                    movie.save()
             except ValueError:
                 pass  # Ungültiger Rating-Wert
     

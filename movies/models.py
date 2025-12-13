@@ -9,6 +9,8 @@ from django.dispatch import receiver
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profile_image = models.ImageField(upload_to='profile_pics/', blank=True, null=True)
+    movie_ratings = models.JSONField(default=dict, blank=True)
+    # Speichert Bewertungen im Format: {movie_id: {"rating": int, "timestamp": "2023-10-01T12:00:00Z"}}
     
     def __str__(self):
         return f"{self.user.username}'s Profile"
