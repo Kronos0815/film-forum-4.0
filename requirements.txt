@@ -1,3 +1,5 @@
+django
 requests
 pillow
 django-environ
+django-harlequin

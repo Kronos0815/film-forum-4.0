@@ -4,18 +4,11 @@
 
 ## NEED TO USE
 
-- Neue Benutzer anlegen
-- Profilbild ändern
-- Namen ändern
-- Icon für die Webseite
 - Richtige Icons statt Emojis
 - Bisschen die UI polishen und Stresstesten
-- Header Bug 
 
 ## NICE TO HAVE
 
-- User Page
-- Film Page
 - vereinfachte Darstellung (Tabelle oder so -> kann einfach geändert werden in dem movie_list einne Alternative bekommt)
 
 ## Notizen
@@ -27,4 +20,9 @@ Wenn keine UI und so dann:
 ```bash
 python manage.py collectstatic
 ```
+
+Auf Server mit forcedPath in der Testumgebung
+
+python -m pip install 'harlequin[postgres]'
+https://harlequin.sh/docs/adapters ?
 
