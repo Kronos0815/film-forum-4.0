@@ -25,4 +25,4 @@ Auf Server mit forcedPath in der Testumgebung
 
 python -m pip install 'harlequin[postgres]'
 https://harlequin.sh/docs/adapters ?
-
+https://github.com/adamchainz/django-harlequin?tab=readme-ov-file
